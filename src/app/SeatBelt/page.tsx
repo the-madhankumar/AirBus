@@ -81,9 +81,9 @@ export default function Page() {
         <div className="bg-blue-600 p-6 rounded-lg shadow-md lg:w-1/2 md:w-full relative">
           <h2 className="text-center text-lg font-semibold mb-4 text-white">Business Class</h2>
           <div className="p-4 rounded-lg shadow-md w-full">
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-wrap gap-4">
               {Array(8).fill(20).map((num, index) => (
-                <div key={index} className="border-2 border-gray-400 p-4 rounded-md w-[50px] text-center bg-white">
+                <div key={index} className="border-2 border-gray-400 p-4 rounded-md w-[50px] text-center ">
                   {num}
                 </div>
               ))}
@@ -94,14 +94,13 @@ export default function Page() {
           </button>
         </div>
 
-        {/* Economy Class Section */}
         <div className="bg-blue-600 p-6 rounded-lg shadow-md lg:w-1/2 md:w-full relative">
           <h2 className="text-center text-lg font-semibold mb-4 text-white">Economy Class</h2>
           <div className="p-4 rounded-lg shadow-md w-full">
             {Array(3).fill(0).map((_, rowIndex) => (
-              <div key={rowIndex} className="flex flex-wrap justify-center gap-4 mb-2">
+              <div key={rowIndex} className="flex flex-wrap gap-4 mb-2">
                 {Array(8).fill(20).map((num, index) => (
-                  <div key={index} className="border-2 border-gray-400 p-4 rounded-md w-[50px] text-center bg-white">
+                  <div key={index} className="border-2 border-gray-400 p-4 rounded-md w-[50px] text-center">
                     {num}
                   </div>
                 ))}

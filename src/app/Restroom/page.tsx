@@ -7,25 +7,25 @@ import { fetchFirebaseData } from '../asset/config';
 
 export default function Restroom() {
   const [firebaseData, setFirebaseData] = useState({
-      bag: null,
-      seat: null,
-      emergency: null,
-    });
-  
-    useEffect(() => {
-      fetchFirebaseData()
-        .then((data: { bag: any; seat: any; emergency: any; }) => {
-          setFirebaseData({
-            bag: data.bag,
-            seat: data.seat,
-            emergency: data.emergency,
-          });
-        })
-        .catch((error: any) => console.error("❌ Error fetching Firebase data:", error));
-    }, []);
-  
-    const { bag, seat, emergency } = firebaseData;
-    
+    bag: null,
+    seat: null,
+    emergency: null,
+  });
+
+  useEffect(() => {
+    fetchFirebaseData()
+      .then((data: { bag: any; seat: any; emergency: any; }) => {
+        setFirebaseData({
+          bag: data.bag,
+          seat: data.seat,
+          emergency: data.emergency,
+        });
+      })
+      .catch((error: any) => console.error("❌ Error fetching Firebase data:", error));
+  }, []);
+
+  const { bag, seat, emergency } = firebaseData;
+
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [windowHeight, setWindowHeight] = useState<number>(0);
 
@@ -67,7 +67,11 @@ export default function Restroom() {
       <div>
         <div
           className={`absolute top-[50%] left-[50%] w-[3%] h-[20%] rounded-lg shadow-lg 
-          ${seat <= 4 ? "bg-orange-400" : "bg-red-800"}`}
+          ${[1, 5].includes(seat) ? "bg-gray-400" :  
+              [2, 6].includes(seat) ? "bg-orange-400" :
+                [3, 7].includes(seat) ? "bg-red-800" :  
+                  "bg-green-500"                            
+            }`}
           style={{ transform: transform1, opacity: 0.7 }}
         ></div>
 
