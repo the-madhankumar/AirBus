@@ -10,12 +10,11 @@ export default function Page() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Trigger the modal to open based on the 'data' value
   useEffect(() => {
     if (data === 3 || data === 7) {
       setIsModalOpen(true);
     }
-  }, [data]); // Depend on 'data', so this runs when 'data' changes
+  }, [data]); 
 
   const closeModal = () => {
     setIsModalOpen(false);
