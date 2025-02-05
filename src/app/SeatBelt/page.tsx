@@ -76,13 +76,16 @@ export default function Page() {
         <TriangleAlert className="w-10 h-10 text-red-800" />
         <span className="text-lg font-semibold text-red-800">Alert</span>
       </div>
-      <div className="flex lg:flex-row gap-6 p-6 w-full md:flex-col">
-        <div className="bg-blue-600 p-6 rounded-lg shadow-md lg:w-1/2 md:w-full absolute">
-          <h2 className="text-center text-lg font-semibold mb-4">Business Class</h2>
-          <div className="p-4 rounded-lg shadow-md relative w-full">
-            <div className="flex flex-row gap-12">
+      <div className="flex flex-col lg:flex-row gap-6 p-6 w-full">
+        {/* Business Class Section */}
+        <div className="bg-blue-600 p-6 rounded-lg shadow-md lg:w-1/2 md:w-full relative">
+          <h2 className="text-center text-lg font-semibold mb-4 text-white">Business Class</h2>
+          <div className="p-4 rounded-lg shadow-md w-full">
+            <div className="flex flex-wrap justify-center gap-4">
               {Array(8).fill(20).map((num, index) => (
-                <div key={index} className="border-2 border-gray-400 p-2 rounded-md">{num}</div>
+                <div key={index} className="border-2 border-gray-400 p-4 rounded-md w-[50px] text-center bg-white">
+                  {num}
+                </div>
               ))}
             </div>
           </div>
@@ -91,13 +94,16 @@ export default function Page() {
           </button>
         </div>
 
-        <div className="bg-blue-600 p-6 rounded-lg shadow-md lg:w-1/2 md:w-full absolute">
-          <h2 className="text-center text-lg font-semibold mb-4">Economy Class</h2>
-          <div className="p-4 rounded-lg shadow-md space-y-4 w-full relative">
+        {/* Economy Class Section */}
+        <div className="bg-blue-600 p-6 rounded-lg shadow-md lg:w-1/2 md:w-full relative">
+          <h2 className="text-center text-lg font-semibold mb-4 text-white">Economy Class</h2>
+          <div className="p-4 rounded-lg shadow-md w-full">
             {Array(3).fill(0).map((_, rowIndex) => (
-              <div key={rowIndex} className="flex flex-row gap-12">
+              <div key={rowIndex} className="flex flex-wrap justify-center gap-4 mb-2">
                 {Array(8).fill(20).map((num, index) => (
-                  <div key={index} className="border-2 border-gray-400 p-2 rounded-md">{num}</div>
+                  <div key={index} className="border-2 border-gray-400 p-4 rounded-md w-[50px] text-center bg-white">
+                    {num}
+                  </div>
                 ))}
               </div>
             ))}
@@ -106,6 +112,7 @@ export default function Page() {
             Send Alert
           </button>
         </div>
-      </div></>
+      </div>
+    </>
   );
 }
