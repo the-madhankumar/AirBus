@@ -7,9 +7,9 @@ import { fetchFirebaseData } from '../asset/config';
 
 export default function Restroom() {
   const [firebaseData, setFirebaseData] = useState({
-    bag: null,
-    seat: null,
-    emergency: null,
+    bag: 0,
+    seat: 0,
+    emergency: 0,
   });
 
   useEffect(() => {

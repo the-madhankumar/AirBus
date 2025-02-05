@@ -24,9 +24,9 @@ const database = getDatabase(app);
 
 export default function Page() {
   const [firebaseData, setFirebaseData] = useState({
-    bag: null,
-    seat: null,
-    emergency: null,
+    bag: 0,
+    seat: 0,
+    emergency: 0,
   });
 
   useEffect(() => {
