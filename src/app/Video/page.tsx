@@ -2,19 +2,36 @@
 
 import { useSearchParams } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
+import { fetchFirebaseData } from '../asset/config';
 
 export default function Page() {
-  const searchParams = useSearchParams();
-  const firebaseData = searchParams.get('data');
-  const data = firebaseData !== null ? parseInt(firebaseData, 10) : null;
+  const [firebaseData, setFirebaseData] = useState({
+    bag: null,
+    seat: null,
+    emergency: null,
+  });
+
+  useEffect(() => {
+    fetchFirebaseData()
+      .then((data: { bag: any; seat: any; emergency: any; }) => {
+        setFirebaseData({
+          bag: data.bag,
+          seat: data.seat,
+          emergency: data.emergency,
+        });
+      })
+      .catch((error: any) => console.error("❌ Error fetching Firebase data:", error));
+  }, []);
+
+  const { bag, seat, emergency } = firebaseData;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (data === 3 || data === 7) {
+    if (seat === 3 || seat === 7) {
       setIsModalOpen(true);
     }
-  }, [data]); 
+  }, [seat]);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -22,7 +39,7 @@ export default function Page() {
 
   return (
     <div className="video-container">
-      <video width="50%" height="240" controls autoPlay loop>
+      <video width="420" height="140" controls autoPlay loop>
         <source src="/Video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>

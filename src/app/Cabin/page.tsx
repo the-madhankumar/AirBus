@@ -1,11 +1,15 @@
 'use client';
 
 import { Folders, Gamepad2, GlassWater, Phone, Plane, PlaneTakeoff, ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function page() {
+    const router = useRouter();
+    const handleVideoClick = () => {
+        router.push('/Video');
+    }
     return (
         <div>
-
             <nav className="px-6 py-4 flex  justify-between gap-8">
                 <div className="px-6 py-4 flex">
                     <button
@@ -41,7 +45,7 @@ export default function page() {
                 </div>
                 <div className="bg-gradient-to-r from-gray-500 to-blue-300 p-4 rounded-lg shadow-lg shadow-blue-200 w-1/4">
                     <div className="flex flex-col justify-center">
-                        <Folders className="px-3 py-4 w-full h-[50vh]" />
+                        <Folders onClick = {handleVideoClick} className="px-3 py-4 w-full h-[50vh]" />
                         <label className="flex flex-center text-[20px] text-white font-bold">Gallery</label>
                     </div>
                 </div>
