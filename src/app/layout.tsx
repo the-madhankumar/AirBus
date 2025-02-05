@@ -38,7 +38,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const handleMenuClick = () => {
     setIsMenuOpen(isMenuOpen => !isMenuOpen);
     setIsArrowOpen(isArrowOpen => !isArrowOpen);
-    router.push("/")
     console.log(isMenuOpen);
   };
 
@@ -72,7 +71,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </div>
 
         {isMenuOpen && (
-          <div className="relative">
+          <><div className="relative">
             <nav className="px-6 py-4 flex gap-8">
               <Link href="/Restroom" className="text-gray-700 dark:text-white px-4 py-2 hover:text-blue-500 transition-all duration-200 ease-out">
                 Restroom
@@ -86,35 +85,34 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </nav>
 
             {/* <div className="relative">
-              <div className="px-3 py-4 w-full h-[50vh] relative">
-                <Image
-                  src="/AirBus.png"
-                  alt="Banner"
-                  layout="fill"
-                  // objectFit="cover"
-                  className="opacity-90"
-                />
-              </div>
-              {pathname === "/Restroom" && (
-                <>
-                  <div className="absolute top-[50%] left-[50%] w-[40px] h-[92px] bg-orange-400 rounded-lg shadow-lg"
-                    style={{ transform: "translateX(-340px) translateY(-110px)", opacity: 0.7 }}>
-                  </div>
-                  <div className={` absolute top-[50%] left-[50%] w-[54px] h-[90px] ${seat <= 4 ? "bg-green-400" : "bg-red-400"} rounded-lg shadow-lg `}
-                    style={{ transform: "translateX(-290px) translateY(-114px)", opacity: 0.5 }}>
-                  </div>
-                </>
-              )}
-
-            </div> */}
-
+      <div className="px-3 py-4 w-full h-[50vh] relative">
+        <Image
+          src="/AirBus.png"
+          alt="Banner"
+          layout="fill"
+          // objectFit="cover"
+          className="opacity-90"
+        />
+      </div>
+      {pathname === "/Restroom" && (
+        <>
+          <div className="absolute top-[50%] left-[50%] w-[40px] h-[92px] bg-orange-400 rounded-lg shadow-lg"
+            style={{ transform: "translateX(-340px) translateY(-110px)", opacity: 0.7 }}>
           </div>
+          <div className={` absolute top-[50%] left-[50%] w-[54px] h-[90px] ${seat <= 4 ? "bg-green-400" : "bg-red-400"} rounded-lg shadow-lg `}
+            style={{ transform: "translateX(-290px) translateY(-114px)", opacity: 0.5 }}>
+          </div>
+        </>
+      )}
+
+    </div> */}
+
+          </div><main className="p-6">{children}</main></>
         )}
 
         {
           isArrowOpen && (
             <div>
-
 
               <nav className="px-6 py-4 flex  justify-between gap-8">
                 <div className="px-6 py-4 flex">
@@ -171,8 +169,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </div>
           )
         }
-
-        <main className="p-6">{children}</main>
       </body>
     </html>
   );
