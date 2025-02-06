@@ -61,16 +61,63 @@ export default function Page() {
     });
   };
 
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [windowHeight, setWindowHeight] = useState<number>(0);
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    setWindowHeight(window.innerHeight);
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      setWindowHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const getTransform = (baseX: number, baseY: number) => {
+    const xOffset = (baseX / 100) * windowWidth;
+    const yOffset = (baseY / 100) * windowHeight;
+    return `translateX(${xOffset}px) translateY(${yOffset}px)`;
+  };
+
+  const transform1 = getTransform(-21, -13);
+  const transform2 = getTransform(-17.5, -13);
+
+  console.log("[ INFO ] Restroom input data : ", firebaseData);
+  console.log("[ INFO ] Data type:", typeof seat);
 
   return (
-    <><div className="px-3 py-4 w-full h-[50vh] relative">
-      <Image
-        src="/AirBus.png"
-        alt="Banner"
-        layout="fill"
-        // objectFit="cover"
-        className="opacity-90" />
-    </div>
+    <>
+      <div className="relative">
+        <div className="px-3 py-4 w-full h-[50vh] relative">
+          <Image
+            src="/AirBus.png"
+            alt="Banner"
+            layout="fill"
+            // objectFit="cover"
+            className="opacity-90" />
+        </div>
+        <div>
+          <div
+            className={`absolute top-[50%] left-[50%] w-[3%] h-[20%] rounded-lg shadow-lg 
+              ${[1, 5].includes(seat) ? "bg-gray-400" :
+                [2, 6].includes(seat) ? "bg-orange-400" :
+                  [3, 7].includes(seat) ? "bg-red-800" :
+                    "bg-green-500"
+              }`}
+            style={{ transform: transform1, opacity: 0.7 }}
+          ></div></div>
+
+        <div
+          className={`absolute top-[50%] left-[50%] w-[3%] h-[20%] rounded-lg shadow-lg 
+              ${seat <= 4 ? "bg-green-400" : "bg-red-400"}`}
+          style={{ transform: transform2, opacity: 0.5 }}
+        ></div>
+      </div>
 
       <div onClick={handleEmergencyClick} className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-red-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
         <TriangleAlert className="w-10 h-10 text-red-800" />
