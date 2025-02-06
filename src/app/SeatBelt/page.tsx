@@ -30,27 +30,36 @@ export default function Page() {
   });
 
   useEffect(() => {
-    fetchFirebaseData()
-      .then((data: { bag: any; seat: any; emergency: any; }) => {
+    const dataRef = ref(database, 'SensorData');
+
+    const unsubscribe = onValue(dataRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log("Raw Firebase data:", data); // Check if Firebase returns numbers
+
+      if (data) {
         setFirebaseData({
-          bag: data.bag,
-          seat: data.seat,
-          emergency: data.emergency,
+          bag: data.Bag ?? "No data",
+          seat: data.Seat ?? "No data",
+          emergency: data.emergency ?? "No data",
         });
-      })
-      .catch((error: any) => console.error("❌ Error fetching Firebase data:", error));
+      } else {
+        console.log('No data available');
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
+
   const { bag, seat, emergency } = firebaseData;
+  console.log("seat data:", seat !== undefined ? seat : "Data not yet loaded");
 
   const handleEmergencyClick = () => {
     const emergencyRef = ref(database, "SensorData/emergency");
 
-    // Use get() to fetch the current value and toggle it
     get(emergencyRef).then((snapshot) => {
       if (snapshot.exists()) {
         const currentValue = snapshot.val();
-        // Toggle the value
         set(emergencyRef, !currentValue);
         console.log("Emergency button clicked!");
       } else {

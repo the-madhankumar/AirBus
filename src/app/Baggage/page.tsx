@@ -4,6 +4,21 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchFirebaseData } from '../asset/config';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, onValue, ref } from 'firebase/database';
+
+const config = {
+  apiKey: "AIzaSyBbZGaZeJvngmmRRPUaceo0pIqbfEQuKGk",
+  authDomain: "airbus-poc-c7267.firebaseapp.com",
+  databaseURL: "https://airbus-poc-c7267-default-rtdb.firebaseio.com",
+  projectId: "airbus-poc-c7267",
+  storageBucket: "airbus-poc-c7267.firebasestorage.app",
+  messagingSenderId: "80259594188",
+  appId: "1:80259594188:web:73236af5acc5c046a74f69"
+};
+
+const app = initializeApp(config);
+const database = getDatabase(app);
 
 export default function Restroom() {
   const [firebaseData, setFirebaseData] = useState({
@@ -12,17 +27,26 @@ export default function Restroom() {
     emergency: 0,
   });
 
-  useEffect(() => {
-    fetchFirebaseData()
-      .then((data: { bag: any; seat: any; emergency: any; }) => {
-        setFirebaseData({
-          bag: data.bag,
-          seat: data.seat,
-          emergency: data.emergency,
-        });
-      })
-      .catch((error: any) => console.error("❌ Error fetching Firebase data:", error));
-  }, []);
+ useEffect(() => {
+     const dataRef = ref(database, 'SensorData');
+ 
+     const unsubscribe = onValue(dataRef, (snapshot) => {
+       const data = snapshot.val();
+       console.log("Raw Firebase data:", data); 
+ 
+       if (data) {
+         setFirebaseData({
+           bag: data.Bag ?? "No data",
+           seat: data.Seat ?? "No data",
+           emergency: data.emergency ?? "No data",
+         });
+       } else {
+         console.log('No data available');
+       }
+     });
+ 
+     return () => unsubscribe();
+   }, []);
 
   const { bag, seat, emergency } = firebaseData;
   const [windowWidth, setWindowWidth] = useState<number>(0);
