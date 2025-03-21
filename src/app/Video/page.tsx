@@ -73,12 +73,12 @@ export default function Page() {
           <div className="modal-content bg-gray-800 p-8 rounded-lg shadow-lg w-[80%] max-w-lg">
             <h2 className="text-xl font-semibold mb-4">Seat Belt Alert</h2>
             <p className="mb-4">Wear the seat belt</p>
-            <button
+            {/* <button
               className="bg-red-500 text-gray-600 px-4 py-2 rounded"
               onClick={closeModal}
             >
               Close
-            </button>
+            </button> */}
           </div>
         </div>
       )}
