@@ -82,7 +82,7 @@ export default function Restroom() {
     <><div className="relative">
       <div className="px-3 py-4 w-full h-[50vh] relative">
         <Image
-          src="/AirBus.png"
+          src="/seatjpgformat.jpg"
           alt="Banner"
           layout="fill"
           // objectFit="cover"
@@ -90,7 +90,7 @@ export default function Restroom() {
       </div>
       <div>
         <div
-          className={`absolute top-[50%] left-[50%] w-[3%] h-[20%] rounded-lg shadow-lg 
+          className={`absolute top-[51%] left-[50.35%] w-[2.3%] h-[20%] rounded-sm shadow-lg 
           ${[1, 5].includes(seat) ? "bg-gray-400" :  
               [2, 6].includes(seat) ? "bg-orange-400" :
                 [3, 7].includes(seat) ? "bg-red-800" :  
@@ -100,7 +100,7 @@ export default function Restroom() {
         ></div>
 
         <div
-          className={`absolute top-[50%] left-[50%] w-[3%] h-[20%] rounded-lg shadow-lg 
+          className={`absolute top-[50%] left-[49.9%] w-[3.5%] h-[17%] rounded-md shadow-lg 
           ${seat <= 4 ? "bg-green-400" : "bg-red-400"}`}
           style={{ transform: transform2, opacity: 0.5 }}
         ></div>

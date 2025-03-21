@@ -79,7 +79,7 @@ export default function Restroom() {
     <><div className="relative">
       <div className="px-3 py-4 w-full h-[50vh] relative">
         <Image
-          src="/abb.png"
+          src="/baggage_jpg_format.jpg"
           alt="Banner"
           layout="fill"
           // objectFit="cover"
@@ -87,7 +87,7 @@ export default function Restroom() {
       </div>
       <div>
         <div
-          className={`absolute top-[50%] left-[50%] w-[5%] h-[10%] rounded-lg shadow-lg bg-white text-black flex justify-center items-center`}
+          className={`absolute top-[52.5%] left-[51.45%] w-[7%] h-[12%] rounded-sm shadow-lg bg-white text-black flex justify-center items-center`}
           style={{ transform: transform1, opacity: 0.7 }}
         >
           {
