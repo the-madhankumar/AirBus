@@ -18,7 +18,7 @@ export default function page() {
                         <span>-------</span>
                         <PlaneTakeoff className="text-white" />
                         <span>-------</span>
-                        <span className="font-semibold">America</span>
+                        <span className="font-semibold">Amberg</span>
                     </button>
                 </div>
                 <div className="px-6 py-4 flex flex-row justify-end gap-2">
