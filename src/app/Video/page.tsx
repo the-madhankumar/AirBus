@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { fetchFirebaseData } from '../asset/config';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, onValue, ref } from 'firebase/database';
+import { getDatabase, onValue, ref, set } from 'firebase/database';
 
 const config = {
   apiKey: "AIzaSyBbZGaZeJvngmmRRPUaceo0pIqbfEQuKGk",
@@ -55,11 +55,14 @@ export default function Page() {
     if (seat === 3 || seat === 7) {
       setIsModalOpen(true);
     }
+    else{
+      setIsModalOpen(false);
+    }
   }, [seat]);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   return (
     <div className="video-container">
