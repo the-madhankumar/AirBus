@@ -70,6 +70,21 @@ export default function Page() {
     });
   };
 
+  const handleSeatAlertClick = () => {
+    const seatRef = ref(database, "SensorData/SeatAlert");
+    get(seatRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const currentValue = snapshot.val();
+        set(seatRef, !currentValue);
+        console.log("Seat alert button clicked!");
+      } else {
+        console.error("No data found for seat alert!");
+      }
+    }).catch((error) => {
+      console.error("Error toggling seat alert status:", error);
+    });
+  };
+
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [windowHeight, setWindowHeight] = useState<number>(0);
 
@@ -127,11 +142,50 @@ export default function Page() {
           style={{ transform: transform2, opacity: 0.5 }}
         ></div>
       </div>
-
-      <div onClick={handleEmergencyClick} className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-red-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
+      
+      <div className="flex flex-col lg:flex-row gap-6 p-6 w-full">
+      <div onClick={handleEmergencyClick} className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-red-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[50%] lg:w-[20%]">
         <TriangleAlert className="w-10 h-10 text-red-800" />
-        <span className="text-lg font-semibold text-red-800">Alert</span>
+        <span className="text-lg font-semibold text-red-800">Emergency Alert</span>
       </div>
+      <div onClick={handleSeatAlertClick} className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-red-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
+        <TriangleAlert className="w-10 h-10 text-red-800" />
+        <span className="text-lg font-semibold text-red-800">Seat Belt Alert</span>
+      </div>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-6 p-6 w-full">
+        {/* Legend Section */}
+        <div className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-red-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
+          <div className="flex flex-col">
+            <span className="text-lg font-semibold text-red-800">Seated</span>
+              <span className="text-lg font-semibold text-red-800">-------------------------------</span>
+            <span className="text-lg font-semibold text-red-800">belt unfastened</span>
+          </div>
+        </div>
+        <div className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-green-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
+          <div className="flex flex-col">
+            <span className="text-lg font-semibold text-green-800">Seated</span>
+              <span className="text-lg font-semibold text-green-800">-------------------------------</span>
+            <span className="text-lg font-semibold text-green-800">belt fastened</span>
+          </div>
+        </div>
+        <div className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-orange-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
+          <div className="flex flex-col">
+            <span className="text-lg font-semibold text-orange-800">Not Seated</span>
+              <span className="text-lg font-semibold text-orange-800">-------------------------------</span>
+            <span className="text-lg font-semibold text-orange-800">belt fastened</span>
+          </div>
+        </div>
+        <div className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-gray-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
+          <div className="flex flex-col">
+            <span className="text-lg font-semibold text-gray-800">Not Seated</span>
+              <span className="text-lg font-semibold text-gray-800">-------------------------------</span>
+            <span className="text-lg font-semibold text-gray-800">belt unfastened</span>
+          </div>
+        </div>
+      </div>
+      
       <div className="flex flex-col lg:flex-row gap-6 p-6 w-full">
         {/* Business Class Section */}
         <div className="bg-blue-600 p-6 rounded-lg shadow-md lg:w-1/2 md:w-full relative">
