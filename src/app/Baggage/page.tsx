@@ -74,6 +74,26 @@ export default function Restroom() {
 
   const transform1 = getTransform(-11.14, -14);
 
+  const getColor = () => {
+    switch(bag){
+      case 0:
+        return { color :"bg-green-800 text-green-100", val : "Empty" };
+      case 1:
+        return { color :"bg-green-800 text-green-100", val : "Empty" };
+      case 2:
+        return { color :"bg-orange-700 text-orange-100", val : "25%" };
+      case 3:
+        return { color :"bg-orange-700 text-orange-100", val : "50%" };
+      case 4:
+        return { color :"bg-orange-700 text-orange-100", val : "75%" };
+      case 5:
+        return { color :"bg-red-700 text-red-200", val : "Full" };
+      default:
+        return { color :"bg-red-700 text-red-200", val : "--" };
+    }
+  }
+
+  const { color , val } = getColor();
 
   return (
     <><div className="relative">
@@ -87,17 +107,10 @@ export default function Restroom() {
       </div>
       <div>
         <div
-          className={`absolute top-[52.5%] left-[51.45%] w-[7%] h-[12%] rounded-sm shadow-lg bg-white text-black flex justify-center items-center`}
+          className={`absolute top-[52.5%] left-[51.45%] w-[7%] h-[12%] rounded-sm shadow-lg ${color} flex justify-center items-center`}
           style={{ transform: transform1, opacity: 0.7 }}
         >
-          {
-            bag === 0 ? "0%" :
-              bag === 1 ? "0%" :
-                bag === 2 ? "25%" :
-                  bag === 3 ? "50%" :
-                    bag === 4 ? "75%" :
-                      bag === 5 ? "100%" :
-                        "--"}
+          {val}
         </div>
       </div>
     </div><div className="flex flex-col gap-4 p-4 md:w-full">
@@ -105,14 +118,9 @@ export default function Restroom() {
           <span className="text-lg font-semibold text-green-700 dark:text-green-300">Empty</span>
         </div>
         <div className="flex items-center gap-3 bg-red-100 dark:bg-orange-700 px-6 py-4 rounded-lg shadow-md w-[16%] md:w-[50%]">
-          <span className="text-lg font-semibold text-red-700 dark:text-red-300">{
-            bag === 0 ? "0%" :
-              bag === 1 ? "0%" :
-                bag === 2 ? "25%" :
-                  bag === 3 ? "50%" :
-                    bag === 4 ? "75%" :
-                      bag === 5 ? "100%" :
-                        "--"} Filled</span>
+          <span className="text-lg font-semibold text-red-700 dark:text-red-300">
+          {val !== "Empty" ? `${val} Filled` : val}
+          </span>
         </div>
         <div className="flex items-center gap-3 bg-red-100 dark:bg-red-900 px-6 py-4 rounded-lg shadow-md w-[16%] md:w-[50%]">
           <span className="text-lg font-semibold text-red-700 dark:text-red-300">Occupied</span>
