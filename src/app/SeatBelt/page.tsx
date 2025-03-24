@@ -144,10 +144,20 @@ export default function Page() {
         <TriangleAlert className={`"w-10 h-10 ${emergencyColor}`} />
         <span className="text-lg font-semibold">Seat Belt Alert</span>
       </div>
-      <div className="flex flex-col gap-2 p-4 bg-white rounded-lg shadow-md w-[20%]">
+      <div className="flex flex-row gap-4 p-4 bg-white rounded-lg shadow-md w-[40%]">
+        <div>
         {[
           { label: "Seated - Belt Unfastened", color: "bg-red-500" },
-          { label: "Seated - Belt Fastened", color: "bg-green-500" },
+          { label: "Seated - Belt Fastened", color: "bg-green-500" }
+        ].map((item, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <div className={`w-4 h-4 rounded ${item.color}`}></div>
+            <span className="text-lg font-sans font-bold text-gray-800 italic">{item.label}</span>
+          </div>
+        ))}
+        </div>
+        <div>
+        {[
           { label: "Not Seated - Belt Fastened", color: "bg-orange-500" },
           { label: "Not Seated - Belt Unfastened", color: "bg-gray-500" }
         ].map((item, index) => (
@@ -156,6 +166,8 @@ export default function Page() {
             <span className="text-lg font-sans font-bold text-gray-800 italic">{item.label}</span>
           </div>
         ))}
+        </div>
+        
       </div>
       
       <div className="flex flex-col lg:flex-row gap-6 p-6 w-full">
