@@ -27,7 +27,10 @@ export default function Page() {
     bag: 0,
     seat: 0,
     emergency: 0,
+    SeatAlert: 0
   });
+  
+  const [emergencyColor, setEmergencyColor] = useState<string>('');
 
   useEffect(() => {
     const dataRef = ref(database, 'SensorData');
@@ -41,6 +44,7 @@ export default function Page() {
           bag: data.Bag ?? "No data",
           seat: data.Seat ?? "No data",
           emergency: data.emergency ?? "No data",
+          SeatAlert: data.SeatAlert ?? "No data"
         });
       } else {
         console.log('No data available');
@@ -51,31 +55,25 @@ export default function Page() {
   }, []);
 
 
-  const { bag, seat, emergency } = firebaseData;
+  const { bag, seat, emergency, SeatAlert } = firebaseData;
   console.log("seat data:", seat !== undefined ? seat : "Data not yet loaded");
 
-  const handleEmergencyClick = () => {
-    const emergencyRef = ref(database, "SensorData/emergency");
+  useEffect(() => {
+    if (firebaseData.SeatAlert === 1) {
+      setEmergencyColor('bg-red-700 text-red-200');
+    } else {
+      setEmergencyColor('bg-green-800 text-green-100');
+    }
+  }, [firebaseData.SeatAlert]);
+  
 
-    get(emergencyRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        const currentValue = snapshot.val();
-        set(emergencyRef, !currentValue);
-        console.log("Emergency button clicked!");
-      } else {
-        console.error("No data found for emergency!");
-      }
-    }).catch((error) => {
-      console.error("Error toggling emergency status:", error);
-    });
-  };
-
-  const handleSeatAlertClick = () => {
+  const handleSeatAlertClick = async () => {
     const seatRef = ref(database, "SensorData/SeatAlert");
-    get(seatRef).then((snapshot) => {
+    get(seatRef).then(async (snapshot) => {
       if (snapshot.exists()) {
         const currentValue = snapshot.val();
-        set(seatRef, !currentValue);
+        await set(seatRef, !currentValue);
+        setEmergencyColor(emergencyColor === 'bg-red-700 text-red-200' ? 'bg-green-800 text-green-100' : 'bg-red-700 text-red-200');
         console.log("Seat alert button clicked!");
       } else {
         console.error("No data found for seat alert!");
@@ -142,48 +140,22 @@ export default function Page() {
           style={{ transform: transform2, opacity: 0.5 }}
         ></div>
       </div>
-      
-      <div className="flex flex-col lg:flex-row gap-6 p-6 w-full">
-      <div onClick={handleEmergencyClick} className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-red-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[50%] lg:w-[20%]">
-        <TriangleAlert className="w-10 h-10 text-red-800" />
-        <span className="text-lg font-semibold text-red-800">Emergency Alert</span>
+      <div onClick={handleSeatAlertClick} className={`"cursor-pointer hover:scale-105 transition transform ease-in-out ${emergencyColor} flex items-center gap-4 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[16%] lg:w-[16%]"`}>
+        <TriangleAlert className={`"w-10 h-10 ${emergencyColor}`} />
+        <span className="text-lg font-semibold">Seat Belt Alert</span>
       </div>
-      <div onClick={handleSeatAlertClick} className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-red-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
-        <TriangleAlert className="w-10 h-10 text-red-800" />
-        <span className="text-lg font-semibold text-red-800">Seat Belt Alert</span>
-      </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-6 p-6 w-full">
-        {/* Legend Section */}
-        <div className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-red-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold text-red-800">Seated</span>
-              <span className="text-lg font-semibold text-red-800">-------------------------------</span>
-            <span className="text-lg font-semibold text-red-800">belt unfastened</span>
+      <div className="flex flex-col gap-2 p-4">
+        {[
+          { label: "Seated - Belt Unfastened", color: "bg-red-500" },
+          { label: "Seated - Belt Fastened", color: "bg-green-500" },
+          { label: "Not Seated - Belt Fastened", color: "bg-orange-500" },
+          { label: "Not Seated - Belt Unfastened", color: "bg-gray-500" }
+        ].map((item, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <div className={`w-4 h-4 rounded ${item.color}`}></div>
+            <span className="text-sm font-medium text-white-800">{item.label}</span>
           </div>
-        </div>
-        <div className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-green-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold text-green-800">Seated</span>
-              <span className="text-lg font-semibold text-green-800">-------------------------------</span>
-            <span className="text-lg font-semibold text-green-800">belt fastened</span>
-          </div>
-        </div>
-        <div className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-orange-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold text-orange-800">Not Seated</span>
-              <span className="text-lg font-semibold text-orange-800">-------------------------------</span>
-            <span className="text-lg font-semibold text-orange-800">belt fastened</span>
-          </div>
-        </div>
-        <div className="cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 bg-green-100 dark:bg-gray-200 my-4 px-6 py-4 rounded-lg shadow-md  md:w-[40%] lg:w-[16%]">
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold text-gray-800">Not Seated</span>
-              <span className="text-lg font-semibold text-gray-800">-------------------------------</span>
-            <span className="text-lg font-semibold text-gray-800">belt unfastened</span>
-          </div>
-        </div>
+        ))}
       </div>
       
       <div className="flex flex-col lg:flex-row gap-6 p-6 w-full">

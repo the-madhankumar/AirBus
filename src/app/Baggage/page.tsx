@@ -1,11 +1,11 @@
 'use client';
-import { LockKeyholeOpen, LockKeyhole } from 'lucide-react';
+import { LockKeyholeOpen, LockKeyhole, TriangleAlert } from 'lucide-react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchFirebaseData } from '../asset/config';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, onValue, ref } from 'firebase/database';
+import { get, getDatabase, onValue, ref, set } from 'firebase/database';
 
 const config = {
   apiKey: "AIzaSyBbZGaZeJvngmmRRPUaceo0pIqbfEQuKGk",
@@ -51,7 +51,16 @@ export default function Restroom() {
   const { bag, seat, emergency } = firebaseData;
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [windowHeight, setWindowHeight] = useState<number>(0);
+  const [emergencyColor, setEmergencyColor] = useState<string>('');
 
+  useEffect(() => {
+    if (emergency === 1) {
+      setEmergencyColor('bg-red-700 text-red-200');
+    } else {
+      setEmergencyColor('bg-green-800 text-green-100');
+    }
+  }, [emergency]);
+  
   useEffect(() => {
     setWindowWidth(window.innerWidth);
     setWindowHeight(window.innerHeight);
@@ -73,6 +82,24 @@ export default function Restroom() {
   };
 
   const transform1 = getTransform(-11.14, -14);
+
+  
+    const handleEmergencyClick = async () => {
+      const emergencyRef = ref(database, "SensorData/emergency");
+  
+      get(emergencyRef).then(async (snapshot) => {
+        if (snapshot.exists()) {
+          const currentValue = snapshot.val();
+          await set(emergencyRef, !currentValue);
+          console.log("Emergency button clicked!");
+          setEmergencyColor(emergencyColor === 'bg-red-700 text-red-200' ? 'bg-green-800 text-green-100' : 'bg-red-700 text-red-200');
+        } else {
+          console.error("No data found for emergency!");
+        }
+      }).catch((error) => {
+        console.error("Error toggling emergency status:", error);
+      });
+    };
 
   const getColor = () => {
     switch(bag){
@@ -113,7 +140,12 @@ export default function Restroom() {
           {val}
         </div>
       </div>
-    </div><div className="flex flex-col gap-4 p-4 md:w-full">
+    </div>
+    <div onClick={handleEmergencyClick} className={`"cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 ${emergencyColor} my-4 px-6 py-4 rounded-lg shadow-md  md:w-[16%] lg:w-[16%]"`}>
+        <TriangleAlert className={`"w-10 h-10 ${emergencyColor}`} />
+        <span className={`text-lg font-semibold`}>Emergency Alert</span>
+      </div>
+    <div className="flex flex-col gap-4 p-4 md:w-full">
         <div className="flex items-center gap-3 bg-green-100 dark:bg-green-900 px-6 py-4 rounded-lg shadow-md w-[16%] md:w-[50%]">
           <span className="text-lg font-semibold text-green-700 dark:text-green-300">Empty</span>
         </div>
