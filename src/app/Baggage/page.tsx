@@ -141,9 +141,9 @@ export default function Restroom() {
         </div>
       </div>
     </div>
-    <div onClick={handleEmergencyClick} className={`"cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 ${emergencyColor} my-4 px-6 py-4 rounded-lg shadow-md  md:w-[16%] lg:w-[16%]"`}>
+    <div onClick={handleEmergencyClick} className={`"cursor-pointer hover:scale-105 transition transform ease-in-out flex items-center gap-4 ${emergencyColor} my-4 px-6 py-4 rounded-lg shadow-md  md:w-[25%] lg:w-[25%]"`}>
         <TriangleAlert className={`"w-10 h-10 ${emergencyColor}`} />
-        <span className={`text-lg font-semibold`}>Emergency Alert</span>
+        <span className={`text-lg font-semibold`}>Emergency Overhead Bin Lock</span>
       </div>
     <div className="flex flex-col gap-4 p-4 md:w-full">
         <div className="flex items-center gap-3 bg-green-100 dark:bg-green-900 px-6 py-4 rounded-lg shadow-md w-[16%] md:w-[50%]">
