@@ -67,7 +67,7 @@ export default function Page() {
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="video-container">
-        <video width="420" height="140" controls autoPlay loop className="mx-auto">
+        <video width="420" height="140" muted autoPlay loop className="mx-auto">
           <source src="/Video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
