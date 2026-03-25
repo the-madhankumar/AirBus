@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import Image from 'next/image'
 import { TriangleAlert } from "lucide-react";
-import { fetchFirebaseData } from "../asset/config";
 import { useEffect, useState } from "react";
 import { onValue, set } from "firebase/database";
 import { initializeApp } from "firebase/app";
