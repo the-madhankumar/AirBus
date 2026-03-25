@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function page() {
     const router = useRouter();
     const handleVideoClick = () => {
-        router.push('/Video');
+        router.push('../Data/Video');
     }
     return (
         <div>
