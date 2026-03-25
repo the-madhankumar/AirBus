@@ -2,7 +2,6 @@
 
 import { useSearchParams } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { fetchFirebaseData } from '../../asset/config';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, onValue, ref, set } from 'firebase/database';
 
