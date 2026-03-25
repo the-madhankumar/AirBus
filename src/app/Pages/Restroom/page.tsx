@@ -3,7 +3,6 @@ import { LockKeyholeOpen, LockKeyhole } from 'lucide-react';
 import { useSearchParams } from 'next/navigation'
 import Image from "next/image";
 import { useEffect, useState } from 'react';
-import { fetchFirebaseData } from '../asset/config';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, onValue, ref } from 'firebase/database';
 

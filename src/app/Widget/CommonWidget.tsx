@@ -3,7 +3,8 @@ type VitalWidgetProps = {
     value: string | number;
     status: string;
     icon: React.ReactNode;
-    color: string; 
+    color: string;
+    range: string;
 };
 
 export function VitalWidget({
@@ -11,44 +12,43 @@ export function VitalWidget({
     value,
     status,
     icon,
-    color
+    color,
+    range,
 }: VitalWidgetProps) {
 
     const bgColor = color.replace("text", "bg");
 
     return (
-        <div className="w-[200px] h-[140px] rounded-2xl p-[1px] bg-gradient-to-br from-white/20 to-white/5 hover:scale-105 transition duration-300">
+        <div className="relative w-[260px] h-[150px] rounded-2xl p-[1px] bg-gradient-to-br from-white/20 to-white/5 hover:scale-105 transition duration-300">
 
-            {/* Glow */}
-            <div className={`absolute w-[200px] h-[140px] rounded-2xl blur-xl opacity-20 ${bgColor}`} />
+            <div className={`absolute inset-0 rounded-2xl blur-xl opacity-20 ${bgColor}`} />
 
-            {/* Card */}
-            <div className="relative w-full h-full rounded-2xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-lg p-4 flex flex-col justify-between">
+            <div className="relative w-full h-full rounded-2xl  bg-black/40 backdrop-blur-lg border border-white/20 shadow-lg p-4 flex items-center gap-4">
 
-                {/* Top Section */}
-                <div className="flex justify-between items-center">
-                    <span className="text-xs text-white/70 uppercase tracking-wide">
-                        {label}
-                    </span>
-
-                    <div className={`p-2 rounded-lg bg-white/10 ${color}`}>
-                        {icon}
-                    </div>
+                <div className={`flex items-center justify-center w-[50px] h-[50px] rounded-xl ${color}`}>
+                    {icon}
                 </div>
 
-                {/* Middle Section */}
-                <div>
-                    <div className="text-3xl font-bold text-white">
-                        {value}
+                <div className="flex flex-col justify-between h-full w-full">
+
+                    <div className="flex justify-between items-center">
+                        <span className="text-xs text-white/60 uppercase tracking-wide">
+                            {label}
+                        </span>
                     </div>
 
-                    <div className={`text-sm font-medium ${color}`}>
-                        {status}
+                    <div>
+                        <div className="text-3xl font-bold text-white leading-none">
+                            {value}
+                        </div>
+                        <div className={`text-sm font-medium mt-1 ${color}`}>
+                            {status}
+                        </div>
+                        <span className="text-[20px] text-white/40">
+                            {range}
+                        </span>
                     </div>
                 </div>
-
-                {/* Bottom Accent */}
-                <div className={`h-[3px] w-full rounded-full ${bgColor}`} />
             </div>
         </div>
     );

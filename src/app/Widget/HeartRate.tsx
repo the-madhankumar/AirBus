@@ -15,7 +15,7 @@ export default function HeartRateWidget({ value = 90 }: Props) {
             <div className="flex flex-col items-center justify-center gap-1">
 
                 <svg
-                    className="w-10 h-10 relative text-red-900 drop-shadow-[0_0_8px_rgba(248,113,113,0.8)] animate-ping"
+                    className="w-24 h-24 relative text-red-900 drop-shadow-[0_0_8px_rgba(248,113,113,0.8)] animate-ping"
                     viewBox="0 0 24 24"
                     fill="none"
                 >
@@ -27,8 +27,15 @@ export default function HeartRateWidget({ value = 90 }: Props) {
                     />
                 </svg>
 
-                <div className="absolute flex flex-col items-center leading-none">
-                    <span className="text-white text-lg font-bold tracking-wide">
+                <div className="
+                    absolute
+                    w-[50px] h-[50px] 
+                    flex flex-col items-center justify-center
+                    rounded-full
+                    bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900
+                    shadow-[0_0_15px_rgba(0,0,0,0.6)]
+                ">
+                    <span className="text-white text-xl font-bold leading-none">
                         {value}
                     </span>
                     <span className="text-[10px] text-white/60 tracking-widest">

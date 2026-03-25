@@ -27,43 +27,43 @@ export default function Page() {
     seatalert: null
   });
 
-  useEffect(() => {
-    const dataRef = ref(database, 'SensorData');
+ useEffect(() => {
+     const dataRef = ref(database, 'SensorData');
+ 
+     const unsubscribe = onValue(dataRef, (snapshot) => {
+       const data = snapshot.val();
+       console.log("Raw Firebase data:", data); 
+ 
+       if (data) {
+         setFirebaseData({
+           bag: data.Bag ?? "No data",
+           seat: data.Seat ?? "No data",
+           emergency: data.emergency ?? "No data",
+           seatalert: data.SeatAlert ?? "No data",
+         });
+       } else {
+         console.log('No data available');
+       }
+     });
+ 
+     return () => unsubscribe();
+   }, []);
 
-    const unsubscribe = onValue(dataRef, (snapshot) => {
-      const data = snapshot.val();
-      console.log("Raw Firebase data:", data);
-
-      if (data) {
-        setFirebaseData({
-          bag: data.Bag ?? "No data",
-          seat: data.Seat ?? "No data",
-          emergency: data.emergency ?? "No data",
-          seatalert: data.SeatAlert ?? "No data",
-        });
-      } else {
-        console.log('No data available');
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const { bag, seat, emergency, seatalert } = firebaseData;
+  const { bag, seat, emergency , seatalert} = firebaseData;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     console.log("seatalert:", seatalert, "seat:", seat);
-
+  
     if (seatalert === true && (seat === 3 || seat === 7)) {
-      console.log("Setting modal open");
+      console.log("Setting modal open"); 
       setIsModalOpen(true);
     } else {
       setIsModalOpen(false);
     }
   }, [seatalert, seat]);
-
+  
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="video-container">
@@ -71,7 +71,7 @@ export default function Page() {
           <source src="/Video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-
+  
         {isModalOpen && (
           <div className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="modal-content bg-gray-800 p-8 rounded-lg shadow-lg w-[80%] max-w-lg">
@@ -82,5 +82,5 @@ export default function Page() {
         )}
       </div>
     </div>
-  );
+  );  
 }

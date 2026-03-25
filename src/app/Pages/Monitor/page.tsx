@@ -1,3 +1,4 @@
+import BodyTempWidget from "@/app/Widget/BodyTemperature";
 import { VitalWidget } from "@/app/Widget/CommonWidget";
 import HeartRateWidget from "@/app/Widget/HeartRate";
 import LungRateWidget from "@/app/Widget/LungRate";
@@ -33,7 +34,12 @@ const widgetStatus = [
         icon: Thermometer,
         color: data.fever === "Fever"
             ? "text-red-500"
-            : "text-green-500"
+            : "text-green-500",
+        coordinates: {
+            top: "5%",
+            left: "10%",
+        },
+        range:"Normal < 37.5°C"
     },
     {
         label: "Respiratory–Cardiac Ratio",
@@ -42,7 +48,12 @@ const widgetStatus = [
         icon: Activity,
         color: data.crr.status === "Normal"
             ? "text-green-500"
-            : "text-yellow-500"
+            : "text-yellow-500",
+        coordinates: {
+            top: "5%",
+            left: "90%",
+        },
+        range:"3 – 5"
     },
     {
         label: "Physiological Stress Index",
@@ -51,7 +62,12 @@ const widgetStatus = [
         icon: Brain,
         color: data.psi.status === "Normal Stress"
             ? "text-green-500"
-            : "text-red-500"
+            : "text-red-500",
+        coordinates: {
+            top: "35%",
+            left: "100%",
+        },
+        range:"~7 – 15"
     },
     {
         label: "Metabolic Activity Indicator",
@@ -60,7 +76,12 @@ const widgetStatus = [
         icon: Wind,
         color: data.mri.status === "Normal"
             ? "text-green-500"
-            : "text-orange-500"
+            : "text-orange-500",
+        coordinates: {
+            top: "35%",
+            left: "0%",
+        },
+        range:"~440 – 750"
     },
     {
         label: "Modified Shock Indicator",
@@ -69,7 +90,12 @@ const widgetStatus = [
         icon: HeartPulse,
         color: data.msi.status === "Normal"
             ? "text-green-500"
-            : "text-red-500"
+            : "text-red-500",
+        coordinates: {
+            top: "65%",
+            left: "90%",
+        },
+        range:"3 - 5"
     },
     {
         label: "Infection Risk Indicator",
@@ -78,7 +104,12 @@ const widgetStatus = [
         icon: ShieldAlert,
         color: data.ipi.status === "Low Risk"
             ? "text-green-500"
-            : "text-red-500"
+            : "text-red-500",
+        coordinates: {
+            top: "65%",
+            left: "10%",
+        },
+        range:"Low if < 2"
     },
     {
         label: "Vital Stability Index",
@@ -87,9 +118,41 @@ const widgetStatus = [
         icon: ShieldCheck,
         color: data.vsi.status === "Stable"
             ? "text-green-500"
-            : "text-red-500"
+            : "text-red-500",
+        coordinates: {
+            top: "90%",
+            left: "50%",
+        },
+        range:"≈1 when stable"
     }
 ];
+
+function Widget() {
+    return (
+        <div className="flex gap-8 flex-wrap justify-between">
+            {widgetStatus.map((item, index) => (
+                <div
+                    key={index}
+                    className="absolute"
+                    style={{
+                        top: item.coordinates.top,
+                        left: item.coordinates.left,
+                        transform: "translate(-50%, -50%)"
+                    }}
+                >
+                    <VitalWidget
+                        label={item.label}
+                        value={item.value}
+                        status={item.status}
+                        icon={<item.icon size={60} />}
+                        color={item.color}
+                        range={item.range}
+                    />
+                </div>
+            ))}
+        </div>
+    );
+}
 
 type BodyProps = {
     color?: string,
@@ -107,7 +170,13 @@ function Body({ temp }: BodyProps) {
     const tempColor = getTempColor();
 
     return (
-        <div className="relative flex justify-center items-center">
+        <div className="
+            relative flex justify-center items-center 
+            w-[650px] h-[650px] 
+            rounded-full 
+            bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900
+            shadow-[inset_0_0_80px_rgba(0,0,0,0.8),0_0_60px_rgba(0,0,0,0.6)]
+        ">
             <svg
                 viewBox="30 0 110 168"
                 className="h-[600px] w-auto"
@@ -118,53 +187,33 @@ function Body({ temp }: BodyProps) {
             </svg>
 
             <div
-                className="absolute top-[3%] left-[38%] px-3 py-1 rounded-full text-white text-sm"
-                style={{ backgroundColor: tempColor }}
+                className="absolute top-[0%] left-[39%] "
             >
-                {temp}°C
+                <BodyTempWidget value={TEMP_DATA.BODY_TEMPERATURE} />
             </div>
 
             <div
-                className="absolute top-[13%] left-[34%]"
+                className="absolute top-[16%] left-[40%]"
             >
                 <LungRateWidget value={TEMP_DATA.RESPIRATORY_RATE} />
             </div>
 
             <div
-                className="absolute top-[23%] left-[34%]"
+                className="absolute top-[30%] left-[40%]"
             >
                 <HeartRateWidget value={TEMP_DATA.HEART_RATE} />
             </div>
-        </div>
-    );
-}
-
-function Widget() {
-    return (
-        <div className="flex gap-8 flex-wrap justify-between">
-            {widgetStatus.map((item, index) => (
-                <VitalWidget
-                    label={item.label}
-                    value={item.value}
-                    status={item.status}
-                    icon={<item.icon size={35} />}
-                    color={item.color}
-                />
-            ))}
+            <Widget />
         </div>
     );
 }
 
 export default function Page() {
     return (
-        <div className="max-w-[1200px] mx-auto flex flex-row items-start">
+        <div className="max-w-[1200px] mx-auto flex flex-row items-start justify-center pt-10">
 
             <div className="flex-shrink-0">
                 <Body color="blue" temp={TEMP_DATA.BODY_TEMPERATURE} />
-            </div>
-
-            <div className="flex flex-col mx-auto px-4 py-6 gap-8">
-                <Widget />
             </div>
 
         </div>

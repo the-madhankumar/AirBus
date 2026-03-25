@@ -14,8 +14,6 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
     emergency: 0,
   });
 
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -27,67 +25,55 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
           emergency: data?.emergency ?? 0,
         });
       })
-      .catch((error) => {
-        console.error("❌ Firebase Error:", error);
-      });
+      .catch((error) => console.error("❌ Firebase Error:", error));
   }, []);
 
-  const { bag, seat, emergency } = firebaseData;
-
-  const handleMenuClick = () => {
-    router.push('/Pages/Cabin');
-  };
-
-  const handleArrowClick = () => {
-    router.push('/');
-  };
+  const handleMenuClick = () => router.push('/Pages/Cabin');
+  const handleArrowClick = () => router.push('/');
 
   return (
-    <div className="bg-gradient-to-r from-[#000428] to-[#004e92] min-h-screen">
+    <div className="bg-gradient-to-r from-[#000428] to-[#004e92] min-h-screen text-white">
 
-      <div className="px-6 py-4 flex justify-between">
+      <header className="flex items-center justify-between px-6 py-5 gap-4">
         <button
           onClick={handleMenuClick}
-          className="px-6 py-4 flex items-center gap-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg hover:scale-105 transition"
+          className="flex items-center gap-3 px-5 py-2 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-lg hover:scale-105 transition transform duration-300"
         >
-          <House className="w-6 h-6" />
+          <House className="w-5 h-5" />
           <span className="font-semibold">Cabin</span>
         </button>
 
+        <nav className="flex gap-6 p-5
+                border-b-4 border-cyan-400 rounded-b-2xl 
+                shadow-md shadow-cyan-400/30
+                hover:scale-105 hover:shadow-lg transition-transform duration-300">
+          {[
+            { label: "Restroom", href: "/Pages/Restroom" },
+            { label: "Seat Belt", href: "/Pages/SeatBelt" },
+            { label: "Baggage Bin", href: "/Pages/Baggage" },
+            { label: "Monitoring", href: "/Pages/Monitor" },
+          ].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-white font-medium hover:text-blue-400 transition duration-200 border border-white/20 p-2 rounded-md"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
         <button
           onClick={handleArrowClick}
-          className="px-6 py-4 flex items-center gap-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg hover:scale-105 transition"
+          className="flex items-center gap-3 px-5 py-2 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-lg hover:scale-105 transition transform duration-300"
         >
-          <ArrowBigRightDash className="w-6 h-6" />
+          <ArrowBigRightDash className="w-5 h-5" />
         </button>
-      </div>
+      </header>
 
-      {isMenuOpen && (
-        <>
-          <div className="px-6 py-4 flex gap-8">
-            <Link href="/Pages/Restroom" className="text-white hover:text-blue-400 transition">
-              Restroom
-            </Link>
-            <Link href="/Pages/SeatBelt" className="text-white hover:text-blue-400 transition">
-              Seat Belt
-            </Link>
-            <Link href="/Pages/Baggage" className="text-white hover:text-blue-400 transition">
-              Baggage Bin
-            </Link>
-            <Link href="/Pages/Monitor" className="text-white hover:text-blue-400 transition">
-              Monitoring
-            </Link>
-          </div>
-
-          {/* <div className="text-white px-6 text-sm opacity-70">
-            Bag: {bag} | Seat: {seat} | Emergency: {emergency}
-          </div> */}
-
-          <main className="p-6">
-            {children}
-          </main>
-        </>
-      )}
+      <main className="p-6">
+        {children}
+      </main>
     </div>
   );
 }
