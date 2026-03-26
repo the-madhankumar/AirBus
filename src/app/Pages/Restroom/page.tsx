@@ -7,9 +7,6 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase, onValue, ref } from 'firebase/database';
 import config from '@/app/Data/config_loader';
 
-const app = initializeApp(config);
-const database = getDatabase(app);
-
 export default function Restroom() {
   const [firebaseData, setFirebaseData] = useState({
     bag: 0,
@@ -18,6 +15,10 @@ export default function Restroom() {
   });
 
   useEffect(() => {
+
+    const app = initializeApp(config);
+    const database = getDatabase(app);
+
     const dataRef = ref(database, 'SensorData');
 
     const unsubscribe = onValue(dataRef, (snapshot) => {

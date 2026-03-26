@@ -4,13 +4,10 @@ import { useRouter } from "next/navigation";
 import Image from 'next/image'
 import { TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
-import { onValue, set } from "firebase/database";
+import { Database, onValue, set } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get } from "firebase/database";
 import config from "@/app/Data/config_loader";
-
-const app = initializeApp(config);
-const database = getDatabase(app);
 
 export default function Page() {
   const [firebaseData, setFirebaseData] = useState({
@@ -22,7 +19,13 @@ export default function Page() {
 
   const [emergencyColor, setEmergencyColor] = useState<string>('');
 
+  let database: Database;
+
   useEffect(() => {
+
+    const app = initializeApp(config);
+    database = getDatabase(app);
+
     const dataRef = ref(database, 'SensorData');
 
     const unsubscribe = onValue(dataRef, (snapshot) => {

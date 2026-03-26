@@ -4,11 +4,8 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
-import { get, getDatabase, onValue, ref, set } from 'firebase/database';
+import { Database, get, getDatabase, onValue, ref, set } from 'firebase/database';
 import config from '@/app/Data/config_loader';
-
-const app = initializeApp(config);
-const database = getDatabase(app);
 
 export default function Restroom() {
   const [firebaseData, setFirebaseData] = useState({
@@ -17,7 +14,12 @@ export default function Restroom() {
     emergency: 0,
   });
 
+  let database: Database;
+
   useEffect(() => {
+    const app = initializeApp(config);
+    database = getDatabase(app);
+
     const dataRef = ref(database, 'SensorData');
 
     const unsubscribe = onValue(dataRef, (snapshot) => {
