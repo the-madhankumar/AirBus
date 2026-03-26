@@ -5,16 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, onValue, ref } from 'firebase/database';
-
-const config = {
-  apiKey: "AIzaSyBbZGaZeJvngmmRRPUaceo0pIqbfEQuKGk",
-  authDomain: "airbus-poc-c7267.firebaseapp.com",
-  databaseURL: "https://airbus-poc-c7267-default-rtdb.firebaseio.com",
-  projectId: "airbus-poc-c7267",
-  storageBucket: "airbus-poc-c7267.firebasestorage.app",
-  messagingSenderId: "80259594188",
-  appId: "1:80259594188:web:73236af5acc5c046a74f69"
-};
+import config from '@/app/Data/config_loader';
 
 const app = initializeApp(config);
 const database = getDatabase(app);
@@ -26,26 +17,26 @@ export default function Restroom() {
     emergency: 0,
   });
 
-   useEffect(() => {
-     const dataRef = ref(database, 'SensorData');
- 
-     const unsubscribe = onValue(dataRef, (snapshot) => {
-       const data = snapshot.val();
-       console.log("Raw Firebase data:", data); 
- 
-       if (data) {
-         setFirebaseData({
-           bag: data.Bag ?? "No data",
-           seat: data.Seat ?? "No data",
-           emergency: data.emergency ?? "No data",
-         });
-       } else {
-         console.log('No data available');
-       }
-     });
- 
-     return () => unsubscribe();
-   }, []);
+  useEffect(() => {
+    const dataRef = ref(database, 'SensorData');
+
+    const unsubscribe = onValue(dataRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log("Raw Firebase data:", data);
+
+      if (data) {
+        setFirebaseData({
+          bag: data.Bag ?? "No data",
+          seat: data.Seat ?? "No data",
+          emergency: data.emergency ?? "No data",
+        });
+      } else {
+        console.log('No data available');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const { bag, seat, emergency } = firebaseData;
 
@@ -90,10 +81,10 @@ export default function Restroom() {
       <div>
         <div
           className={`absolute top-[51%] left-[50.35%] w-[2.3%] h-[20%] rounded-sm shadow-lg 
-          ${[1, 5].includes(seat) ? "bg-gray-400" :  
+          ${[1, 5].includes(seat) ? "bg-gray-400" :
               [2, 6].includes(seat) ? "bg-orange-400" :
-                [3, 7].includes(seat) ? "bg-red-800" :  
-                  "bg-green-500"                            
+                [3, 7].includes(seat) ? "bg-red-800" :
+                  "bg-green-500"
             }`}
           style={{ transform: transform1, opacity: 0.7 }}
         ></div>

@@ -7,16 +7,7 @@ import { useEffect, useState } from "react";
 import { onValue, set } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get } from "firebase/database";
-
-const config = {
-  apiKey: "AIzaSyBbZGaZeJvngmmRRPUaceo0pIqbfEQuKGk",
-  authDomain: "airbus-poc-c7267.firebaseapp.com",
-  databaseURL: "https://airbus-poc-c7267-default-rtdb.firebaseio.com",
-  projectId: "airbus-poc-c7267",
-  storageBucket: "airbus-poc-c7267.firebasestorage.app",
-  messagingSenderId: "80259594188",
-  appId: "1:80259594188:web:73236af5acc5c046a74f69"
-};
+import config from "@/app/Data/config_loader";
 
 const app = initializeApp(config);
 const database = getDatabase(app);
@@ -28,7 +19,7 @@ export default function Page() {
     emergency: 0,
     SeatAlert: 0
   });
-  
+
   const [emergencyColor, setEmergencyColor] = useState<string>('');
 
   useEffect(() => {
@@ -64,7 +55,7 @@ export default function Page() {
       setEmergencyColor('bg-green-800 text-green-100');
     }
   }, [firebaseData.SeatAlert]);
-  
+
 
   const handleSeatAlertClick = async () => {
     const seatRef = ref(database, "SensorData/SeatAlert");
@@ -145,30 +136,30 @@ export default function Page() {
       </div>
       <div className="flex flex-row gap-4 p-4 bg-white rounded-lg shadow-md w-[40%]">
         <div>
-        {[
-          { label: "Seated - Belt Unfastened", color: "bg-red-500" },
-          { label: "Seated - Belt Fastened", color: "bg-green-500" }
-        ].map((item, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <div className={`w-4 h-4 rounded ${item.color}`}></div>
-            <span className="text-lg font-sans font-bold text-gray-800 italic">{item.label}</span>
-          </div>
-        ))}
+          {[
+            { label: "Seated - Belt Unfastened", color: "bg-red-500" },
+            { label: "Seated - Belt Fastened", color: "bg-green-500" }
+          ].map((item, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <div className={`w-4 h-4 rounded ${item.color}`}></div>
+              <span className="text-lg font-sans font-bold text-gray-800 italic">{item.label}</span>
+            </div>
+          ))}
         </div>
         <div>
-        {[
-          { label: "Not Seated - Belt Fastened", color: "bg-orange-500" },
-          { label: "Not Seated - Belt Unfastened", color: "bg-gray-500" }
-        ].map((item, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <div className={`w-4 h-4 rounded ${item.color}`}></div>
-            <span className="text-lg font-sans font-bold text-gray-800 italic">{item.label}</span>
-          </div>
-        ))}
+          {[
+            { label: "Not Seated - Belt Fastened", color: "bg-orange-500" },
+            { label: "Not Seated - Belt Unfastened", color: "bg-gray-500" }
+          ].map((item, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <div className={`w-4 h-4 rounded ${item.color}`}></div>
+              <span className="text-lg font-sans font-bold text-gray-800 italic">{item.label}</span>
+            </div>
+          ))}
         </div>
-        
+
       </div>
-      
+
       <div className="flex flex-col lg:flex-row gap-6 p-6 w-full">
         {/* Business Class Section */}
         <div className="bg-blue-600 p-6 rounded-lg shadow-md lg:w-1/2 md:w-full relative">
