@@ -20,8 +20,6 @@ export default function Restroom() {
   useEffect(() => {
     const dataRef = ref(database, 'SensorData');
 
-    console.log("Got the variables from the environmental variable :", process.env.NEXT_PUBLIC_APIKEY);
-
     const unsubscribe = onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
       console.log("Raw Firebase data:", data);
