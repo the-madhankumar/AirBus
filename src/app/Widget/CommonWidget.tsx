@@ -25,7 +25,7 @@ export function VitalWidget({
 
             <div className="relative w-full h-full rounded-2xl  bg-black/40 backdrop-blur-lg border border-white/20 shadow-lg p-4 flex items-center gap-4">
 
-                <div className={`flex items-center justify-center w-[50px] h-[50px] rounded-xl ${color}`}>
+                <div className={`flex items-center justify-center w-[70px] h-[70px] rounded-xl ${color}`}>
                     {icon}
                 </div>
 

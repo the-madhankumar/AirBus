@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Database, onValue, set } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get } from "firebase/database";
-import config from "@/app/Data/config_loader";
+import { config } from "@/app/Data/config_loader";
 
 export default function Page() {
   const [firebaseData, setFirebaseData] = useState({

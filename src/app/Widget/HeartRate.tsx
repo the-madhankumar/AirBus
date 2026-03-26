@@ -29,7 +29,7 @@ export default function HeartRateWidget({ value = 90 }: Props) {
 
                 <div className="
                     absolute
-                    w-[50px] h-[50px] 
+                    w-[65px] h-[65px] 
                     flex flex-col items-center justify-center
                     rounded-full
                     bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900

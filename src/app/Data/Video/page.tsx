@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, onValue, ref, set } from 'firebase/database';
-import config from '../config_loader';
+import { config } from '../config_loader';
 
 export default function Page() {
   const [firebaseData, setFirebaseData] = useState({
@@ -17,7 +17,7 @@ export default function Page() {
 
     const app = initializeApp(config);
     const database = getDatabase(app);
-    
+
     const dataRef = ref(database, 'SensorData');
 
     const unsubscribe = onValue(dataRef, (snapshot) => {

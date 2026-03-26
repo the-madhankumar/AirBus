@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, onValue, ref } from 'firebase/database';
-import config from '@/app/Data/config_loader';
+import { config } from '@/app/Data/config_loader';
 
 export default function Restroom() {
   const [firebaseData, setFirebaseData] = useState({

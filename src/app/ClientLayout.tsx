@@ -43,9 +43,9 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
           <span className="font-semibold">Cabin</span>
         </button>
 
-        <nav className="flex gap-6 p-5
-                border-b-4 border-cyan-400 rounded-b-2xl 
-                shadow-md shadow-cyan-400/30
+        <nav className="flex gap-6 p-2
+                border-b-4 border-cyan-400 rounded-2xl 
+                shadow-lg shadow-cyan-400/50
                 hover:scale-105 hover:shadow-lg transition-transform duration-300">
           {[
             { label: "Restroom", href: "/Pages/Restroom" },
@@ -56,7 +56,7 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
             <Link
               key={item.href}
               href={item.href}
-              className="text-white font-medium hover:text-blue-400 transition duration-200 border border-white/20 p-2 rounded-md"
+              className="text-white font-medium hover:text-blue-400 transition duration-200 p-2 rounded-md"
             >
               {item.label}
             </Link>

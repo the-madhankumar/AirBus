@@ -1,133 +1,18 @@
+'use client'
+
+import { airbusApp } from "@/app/asset/firebase";
+import { config, config_airbushealth } from "@/app/Data/config_loader";
+import { getWidgetStatus } from "@/app/Data/widget_loader";
 import BodyTempWidget from "@/app/Widget/BodyTemperature";
 import { VitalWidget } from "@/app/Widget/CommonWidget";
 import HeartRateWidget from "@/app/Widget/HeartRate";
 import LungRateWidget from "@/app/Widget/LungRate";
-import { analyzeVitals } from "@/app/utils/Derivation";
+import { initializeApp } from "@firebase/app";
+import { getDatabase, onValue, ref } from "@firebase/database";
 
-import {
-    Thermometer,
-    Activity,
-    HeartPulse,
-    Wind,
-    Brain,
-    ShieldAlert,
-    ShieldCheck
-} from "lucide-react";
+import { useEffect, useState } from "react";
 
-const TEMP_DATA = {
-    BODY_TEMPERATURE: 36,
-    HEART_RATE: 70,
-    RESPIRATORY_RATE: 13,
-}
-
-const data = analyzeVitals({
-    temp: TEMP_DATA.BODY_TEMPERATURE,
-    heartRate: TEMP_DATA.HEART_RATE,
-    respiratoryRate: TEMP_DATA.RESPIRATORY_RATE
-});
-
-const widgetStatus = [
-    {
-        label: "Fever Status",
-        value: `${TEMP_DATA.BODY_TEMPERATURE}°C`,
-        status: data.fever,
-        icon: Thermometer,
-        color: data.fever === "Fever"
-            ? "text-red-500"
-            : "text-green-500",
-        coordinates: {
-            top: "5%",
-            left: "10%",
-        },
-        range:"Normal < 37.5°C"
-    },
-    {
-        label: "Respiratory–Cardiac Ratio",
-        value: data.crr.value.toFixed(2),
-        status: data.crr.status,
-        icon: Activity,
-        color: data.crr.status === "Normal"
-            ? "text-green-500"
-            : "text-yellow-500",
-        coordinates: {
-            top: "5%",
-            left: "90%",
-        },
-        range:"3 – 5"
-    },
-    {
-        label: "Physiological Stress Index",
-        value: data.psi.value.toFixed(2),
-        status: data.psi.status,
-        icon: Brain,
-        color: data.psi.status === "Normal Stress"
-            ? "text-green-500"
-            : "text-red-500",
-        coordinates: {
-            top: "35%",
-            left: "100%",
-        },
-        range:"~7 – 15"
-    },
-    {
-        label: "Metabolic Activity Indicator",
-        value: data.mri.value.toFixed(2),
-        status: data.mri.status,
-        icon: Wind,
-        color: data.mri.status === "Normal"
-            ? "text-green-500"
-            : "text-orange-500",
-        coordinates: {
-            top: "35%",
-            left: "0%",
-        },
-        range:"~440 – 750"
-    },
-    {
-        label: "Modified Shock Indicator",
-        value: data.msi.value.toFixed(2),
-        status: data.msi.status,
-        icon: HeartPulse,
-        color: data.msi.status === "Normal"
-            ? "text-green-500"
-            : "text-red-500",
-        coordinates: {
-            top: "65%",
-            left: "90%",
-        },
-        range:"3 - 5"
-    },
-    {
-        label: "Infection Risk Indicator",
-        value: data.ipi.value.toFixed(2),
-        status: data.ipi.status,
-        icon: ShieldAlert,
-        color: data.ipi.status === "Low Risk"
-            ? "text-green-500"
-            : "text-red-500",
-        coordinates: {
-            top: "65%",
-            left: "10%",
-        },
-        range:"Low if < 2"
-    },
-    {
-        label: "Vital Stability Index",
-        value: data.vsi.value.toFixed(2),
-        status: data.vsi.status,
-        icon: ShieldCheck,
-        color: data.vsi.status === "Stable"
-            ? "text-green-500"
-            : "text-red-500",
-        coordinates: {
-            top: "90%",
-            left: "50%",
-        },
-        range:"≈1 when stable"
-    }
-];
-
-function Widget() {
+function Widget({ widgetStatus }: { widgetStatus: any[] }) {
     return (
         <div className="flex gap-8 flex-wrap justify-between">
             {widgetStatus.map((item, index) => (
@@ -155,15 +40,19 @@ function Widget() {
 }
 
 type BodyProps = {
-    color?: string,
-    temp: number,
+    TEMP_DATA: {
+        BODY_TEMPERATURE: number;
+        HEART_RATE: number;
+        RESPIRATORY_RATE: number;
+    },
+    widgetStatus: any[]
 }
 
-function Body({ temp }: BodyProps) {
+function Body({ TEMP_DATA, widgetStatus }: BodyProps) {
     const getTempColor = () => {
-        if (temp < 36) return "#60A5FA"; // cold (blue)
-        if (temp <= 37.5) return "#22C55E"; // normal (green)
-        if (temp <= 39) return "#F59E0B"; // fever (orange)
+        if (TEMP_DATA.BODY_TEMPERATURE < 36) return "#60A5FA"; // cold (blue)
+        if (TEMP_DATA.BODY_TEMPERATURE <= 37.5) return "#22C55E"; // normal (green)
+        if (TEMP_DATA.BODY_TEMPERATURE <= 39) return "#F59E0B"; // fever (orange)
         return "#EF4444"; // high fever (red)
     };
 
@@ -203,17 +92,56 @@ function Body({ temp }: BodyProps) {
             >
                 <HeartRateWidget value={TEMP_DATA.HEART_RATE} />
             </div>
-            <Widget />
+            <Widget widgetStatus={widgetStatus} />
         </div>
     );
 }
 
 export default function Page() {
+
+    const [TEMP_DATA, SET_TEMP_DATA] = useState(
+        {
+            BODY_TEMPERATURE: 0,
+            HEART_RATE: 0,
+            RESPIRATORY_RATE: 0,
+        }
+    );
+
+    const [widgetStatus, setWidgetStatus] = useState<any[]>([]);
+
+    useEffect(() => {
+        const database = getDatabase(airbusApp);
+        const dataRef = ref(database, 'passenger_monitor');
+
+        const unsubscribe = onValue(dataRef, (snapshot) => {
+            const data = snapshot.val();
+            console.log("Raw Firebase data:", data);
+
+            if (!data) {
+                console.log('No data available');
+                return;
+            }
+
+            const newTempData = {
+                BODY_TEMPERATURE: Number(data.thermal.body_temperature_c.toFixed(2)),
+                HEART_RATE: Number(data.radar.heart_rate_bpm.toFixed(2)),
+                RESPIRATORY_RATE: Number(data.radar.respiration_rate_bpm.toFixed(2)),
+            };
+
+            SET_TEMP_DATA(newTempData);
+
+            const dataValue = getWidgetStatus(newTempData);
+            setWidgetStatus(dataValue);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
     return (
         <div className="max-w-[1200px] mx-auto flex flex-row items-start justify-center pt-10">
 
             <div className="flex-shrink-0">
-                <Body color="blue" temp={TEMP_DATA.BODY_TEMPERATURE} />
+                <Body TEMP_DATA={TEMP_DATA} widgetStatus={widgetStatus} />
             </div>
 
         </div>

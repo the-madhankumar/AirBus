@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { Database, get, getDatabase, onValue, ref, set } from 'firebase/database';
-import config from '@/app/Data/config_loader';
+import { config } from '@/app/Data/config_loader';
 
 export default function Restroom() {
   const [firebaseData, setFirebaseData] = useState({
