@@ -1,7 +1,6 @@
 'use client'
 
 import { airbusApp } from "@/app/asset/firebase";
-import { config, config_airbushealth } from "@/app/Data/config_loader";
 import { getWidgetStatus } from "@/app/Data/widget_loader";
 import BodyTempWidget from "@/app/Widget/BodyTemperature";
 import { VitalWidget } from "@/app/Widget/CommonWidget";

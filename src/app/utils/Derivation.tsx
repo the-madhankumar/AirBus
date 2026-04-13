@@ -27,7 +27,8 @@ const HealthMetrics = {
     },
 
     infectionProbabilityIndex: ({ heartRate, respiratoryRate, temp }: VitalInputs): number => {
-        return (heartRate * respiratoryRate * temp) / 1000;
+        // return (heartRate * respiratoryRate * temp) / 1000;
+        return 1.5;
     },
 
     vitalStabilityIndex: ({ heartRate, respiratoryRate, temp }: VitalInputs): number => {
