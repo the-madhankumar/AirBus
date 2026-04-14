@@ -14,8 +14,11 @@ const HealthMetrics = {
         return heartRate / respiratoryRate;
     },
 
-    physiologicalStressIndex: ({ heartRate, respiratoryRate }: VitalInputs): number => {
-        return (heartRate * respiratoryRate) / 100;
+    physiologicalStressIndex: ({ heartRate, respiratoryRate, temp }: VitalInputs): number => {
+        let formula;
+        formula = (5 * ((temp - 37)/(39.5 - 0))) + (5 * ((heartRate - 70)/(180 - 0))) // original formula
+        formula = (heartRate * respiratoryRate) / 100; // ideal formula
+        return formula;
     },
 
     metabolicRateIndicator: ({ temp, respiratoryRate }: VitalInputs): number => {

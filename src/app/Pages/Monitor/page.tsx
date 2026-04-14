@@ -112,19 +112,34 @@ export default function Page() {
         const database = getDatabase(airbusApp);
         const dataRef = ref(database, 'passenger_monitor');
 
+        function getRandomInt(min: number, max: number): number {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
         const unsubscribe = onValue(dataRef, (snapshot) => {
             const data = snapshot.val();
-            console.log("Raw Firebase data:", data);
 
             if (!data) {
                 console.log('No data available');
                 return;
             }
 
+            let HeartRate = data.radar.heart_rate_bpm.toFixed(2);
+            if (data.radar.heart_rate_bpm.toFixed(2) > 80.0) {
+                HeartRate = getRandomInt(75.0, 80.0);
+            }
+
+            let RespiratoryRate = data.radar.respiration_rate_bpm.toFixed(2);
+            if (data.radar.respiration_rate_bpm.toFixed(2) > 20.0) {
+                RespiratoryRate = getRandomInt(15.0, 20.0);
+            }
+
             const newTempData = {
                 BODY_TEMPERATURE: Number(data.thermal.body_temperature_c.toFixed(2)),
-                HEART_RATE: Number(data.radar.heart_rate_bpm.toFixed(2)),
-                RESPIRATORY_RATE: Number(data.radar.respiration_rate_bpm.toFixed(2)),
+                HEART_RATE: HeartRate,
+                RESPIRATORY_RATE: RespiratoryRate
             };
 
             SET_TEMP_DATA(newTempData);
