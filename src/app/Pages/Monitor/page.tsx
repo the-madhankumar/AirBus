@@ -2,6 +2,7 @@
 
 import { airbusApp } from "@/app/asset/firebase";
 import { getWidgetStatus } from "@/app/Data/widget_loader";
+import getRandomInt from "@/app/utils/mathUtils";
 import BodyTempWidget from "@/app/Widget/BodyTemperature";
 import { VitalWidget } from "@/app/Widget/CommonWidget";
 import HeartRateWidget from "@/app/Widget/HeartRate";
@@ -111,12 +112,6 @@ export default function Page() {
     useEffect(() => {
         const database = getDatabase(airbusApp);
         const dataRef = ref(database, 'passenger_monitor');
-
-        function getRandomInt(min: number, max: number): number {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
 
         const unsubscribe = onValue(dataRef, (snapshot) => {
             const data = snapshot.val();

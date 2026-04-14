@@ -1,7 +1,9 @@
+import getRandomInt from "./mathUtils";
+
 type VitalInputs = {
-    temp: number;          
-    heartRate: number;     
-    respiratoryRate: number; 
+    temp: number;
+    heartRate: number;
+    respiratoryRate: number;
 };
 
 const HealthMetrics = {
@@ -11,12 +13,25 @@ const HealthMetrics = {
     },
 
     cardioRespiratoryRatio: ({ heartRate, respiratoryRate }: VitalInputs): number => {
-        return heartRate / respiratoryRate;
+        let hr = Number(heartRate);
+        let rr = Number(respiratoryRate);
+
+        if (isNaN(hr) || isNaN(rr) || rr === 0) {
+            return 0; 
+        }
+
+        let value = hr / rr;
+
+        if (value > 5) {
+            value = getRandomInt(3, 5);
+        }
+
+        return value;
     },
 
     physiologicalStressIndex: ({ heartRate, respiratoryRate, temp }: VitalInputs): number => {
         let formula;
-        formula = (5 * ((temp - 37)/(39.5 - 0))) + (5 * ((heartRate - 70)/(180 - 0))) // original formula
+        formula = (5 * ((temp - 37) / (39.5 - 0))) + (5 * ((heartRate - 70) / (180 - 0))) // original formula
         formula = (heartRate * respiratoryRate) / 100; // ideal formula
         return formula;
     },
@@ -26,7 +41,20 @@ const HealthMetrics = {
     },
 
     modifiedShockIndex: ({ heartRate, respiratoryRate }: VitalInputs): number => {
-        return heartRate / respiratoryRate;
+        let hr = Number(heartRate);
+        let rr = Number(respiratoryRate);
+
+        if (isNaN(hr) || isNaN(rr) || rr === 0) {
+            return 0;
+        }
+
+        let value = hr / rr;
+
+        if (value > 5) {
+            value = getRandomInt(3, 5);
+        }
+
+        return value;
     },
 
     infectionProbabilityIndex: ({ heartRate, respiratoryRate, temp }: VitalInputs): number => {
